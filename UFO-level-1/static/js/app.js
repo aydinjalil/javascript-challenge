@@ -10,9 +10,9 @@ var table = d3.select("table");
 // http://getbootstrap.com/docs/3.3/css/#tables-striped
 table.attr("class", "table table-striped");
 
-// Use D3 to select the table body
 
 
+// Create a row every time the function is called
 function create_row(){
 
 		var tbody = d3.select('#tbody');
@@ -20,12 +20,14 @@ function create_row(){
 		return row;
 }
 
-
+// Fills the table with ufo_data
 function fill_table(_data){
 
 	for (var i = 0; i < _data.length; i++){
+		// Calls create_row function to create a single row
 		row = create_row()
 
+		//append elements to each column 
 		row.append("td").text(_data[i].datetime);
 		row.append("td").text(_data[i].city.replace( /\b./g, function(a){ return a.toUpperCase(); } ));
 		row.append("td").text(_data[i].state.toUpperCase());
@@ -39,7 +41,7 @@ function fill_table(_data){
 }
 
 
-
+// Erase data on table once the filter_button clicked
 function erase_table(){
 	
 	// Remove elements in table before populating filtered data
@@ -49,6 +51,7 @@ function erase_table(){
 
 }
 
+// Checks if date belongs to datetime values in ufo_data object. Returns true or false.
 function date_check(date){
 	for (var i = 0; i < ufo_data.length; i++){
 		if (ufo_data[i].datetime === date){
@@ -63,8 +66,8 @@ var button = document.getElementById("filter-btn");
 
 var input = document.getElementById("datetime");
 
-// var filtered_dates = data.filter(filter_dates);
 
+//fills the table based on input date. if date is not valid, alerts user and provides list of available dates. 
 button.addEventListener("click", function() {
 	if(input.value.length > 0 && date_check(input.value)) {
 		erase_table();
@@ -83,4 +86,5 @@ button.addEventListener("click", function() {
 
 })
 
+// Call the fill table function first time when the page is loaded.
 fill_table(ufo_data);
